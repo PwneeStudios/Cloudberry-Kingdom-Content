@@ -1,2 +1,6 @@
 __premult
 ~*
+*.suo
+bin
+obj
+ContentBuilder/Properties

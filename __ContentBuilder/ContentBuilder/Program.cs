@@ -14,127 +14,24 @@ using System.Drawing.Drawing2D;
 using System.Data;
 using System.Data.OleDb;
 
-		//static Dictionary<string, string> CustomParams = new Dictionary<string,string>()
-		//{
-		//    // Uncompressed, with mipmaps
-		//    { "Xbox_A",             "-u8888" },
-		//    { "Xbox_B",             "-u8888" },
-		//    { "Xbox_Dir",           "-u8888" },
-		//    { "Xbox_LB",            "-u8888" },
-		//    { "Xbox_LT",            "-u8888" },
-		//    { "Xbox_RB",            "-u8888" },
-		//    { "Xbox_RT",            "-u8888" },
-		//    { "Xbox_Start",         "-u8888" },
-		//    { "Xbox_X",             "-u8888" },
-		//    { "Xbox_Y",             "-u8888" },
-		//    { "Grobold_Japanese",   "-u8888" },
-		//    { "Grobold_Western",    "-u8888" },
-
-		//    // DXT1, no mipmaps
-		//    { "Castle_Backdrop_2",      "-dxt1c -nomipmap" },
-		//    { "castle_wall",            "-dxt1c -nomipmap" },
-		//    { "castle_wall_p2",         "-dxt1c -nomipmap" },
-		//    { "cave_backdrop",          "-dxt1c -nomipmap" },
-		//    { "cave_backdrop_p2",       "-dxt1c -nomipmap" },
-		//    { "cloud_castle_layer5",    "-dxt1c -nomipmap" },
-		//    { "cloud_castle_layer5_p2", "-dxt1c -nomipmap" },
-		//    { "hills_backdrop",         "-dxt1c -nomipmap" },
-		//    { "hills_backdrop_p2",      "-dxt1c -nomipmap" },
-		//    { "sea_backdrop",           "-dxt1c -nomipmap" },
-		//    { "sea_backdrop_p2",        "-dxt1c -nomipmap" },
-		//    { "Title_Blur",             "-dxt1c -nomipmap" },
-
-		//    // dxt5, no mipmaps
-		//    { "cave_bottom_1_p2_trim1",     "-dxt5 -nomipmap" },
-		//    { "cave_bottom_1_p2_trim2",     "-dxt5 -nomipmap" },
-		//    { "cave_bottom_1_trim1",        "-dxt5 -nomipmap" },
-		//    { "cave_bottom_1_trim2",        "-dxt5 -nomipmap" },
-		//    { "cave_bottom_2_p1",           "-dxt5 -nomipmap" },
-		//    { "cave_bottom_2_p2",           "-dxt5 -nomipmap" },
-		//    { "cloud_castle_layer4",        "-dxt5 -nomipmap" },
-		//    { "door_castle_1",              "-dxt5 -nomipmap" },
-		//    { "door_castle_2",              "-dxt5 -nomipmap" },
-		//    { "door_cave_1",                "-dxt5 -nomipmap" },
-		//    { "door_cave_2",                "-dxt5 -nomipmap" },
-		//    { "door_cloud_1",               "-dxt5 -nomipmap" },
-		//    { "door_cloud_2",               "-dxt5 -nomipmap" },
-		//    { "door_forest_1",              "-dxt5 -nomipmap" },
-		//    { "door_forest_2",              "-dxt5 -nomipmap" },
-		//    { "door_hills_1",               "-dxt5 -nomipmap" },
-		//    { "door_hills_2",               "-dxt5 -nomipmap" },
-		//    { "door_sea_1",                 "-dxt5 -nomipmap" },
-		//    { "door_sea_2",                 "-dxt5 -nomipmap" },
-		//    { "forest_backhills_p2_trim",   "-dxt5 -nomipmap" },
-		//    { "forest_backhills_trim",      "-dxt5 -nomipmap" },
-		//    { "forest_clouds",              "-dxt5 -nomipmap" },
-		//    { "forest_foretrees",           "-dxt5 -nomipmap" },
-		//    { "forest_foretrees_p2",        "-dxt5 -nomipmap" },
-		//    { "forest_mid_p2_trim",         "-dxt5 -nomipmap" },
-		//    { "forest_mid_trim",            "-dxt5 -nomipmap" },
-		//    { "forest_sky",                 "-dxt5 -nomipmap" },
-		//    { "hills_backcastles_p2_trim",  "-dxt5 -nomipmap" },
-		//    { "hills_backcastles_trim",     "-dxt5 -nomipmap" },
-		//    { "hills_backhills",            "-dxt5 -nomipmap" },
-		//    { "hills_backhills2_p2_trim",   "-dxt5 -nomipmap" },
-		//    { "hills_backhills2_trim",      "-dxt5 -nomipmap" },
-		//    { "hills_backhills_p2",         "-dxt5 -nomipmap" },
-		//    { "hills_clouds",               "-dxt5 -nomipmap" },
-		//    { "hills_hill1",                "-dxt5 -nomipmap" },
-		//    { "hills_hill2",                "-dxt5 -nomipmap" },
-		//    { "hills_hillandtree",          "-dxt5 -nomipmap" },
-		//    { "hills_plants_1",             "-dxt5 -nomipmap" },
-		//    { "hills_plants_2",             "-dxt5 -nomipmap" },
-		//    { "hills_plants_3",             "-dxt5 -nomipmap" },
-		//    { "hills_plants_4",             "-dxt5 -nomipmap" },
-		//    { "hills_plants_5",             "-dxt5 -nomipmap" },
-		//    { "hills_plants_6",             "-dxt5 -nomipmap" },
-		//    { "hills_rock",                 "-dxt5 -nomipmap" },
-		//    { "Pillar_Castle_1000",         "-dxt5 -nomipmap" },
-		//    { "Pillar_Castle_600",          "-dxt5 -nomipmap" },
-		//    { "Pillar_Cave_1000",           "-dxt5 -nomipmap" },
-		//    { "Pillar_Cave_600",            "-dxt5 -nomipmap" },
-		//    { "Pillar_Cloud_1000",          "-dxt5 -nomipmap" },
-		//    { "Pillar_Cloud_600",           "-dxt5 -nomipmap" },
-		//    { "Pillar_Forest_1000",         "-dxt5 -nomipmap" },
-		//    { "Pillar_Forest_600",          "-dxt5 -nomipmap" },
-		//    { "Pillar_Hills_1000",          "-dxt5 -nomipmap" },
-		//    { "Pillar_Hills_600",           "-dxt5 -nomipmap" },
-		//    { "Pillar_Sea_1000",            "-dxt5 -nomipmap" },
-		//    { "Pillar_Sea_600",             "-dxt5 -nomipmap" },
-		//    { "sea_water_1",                "-dxt5 -nomipmap" },
-		//    { "sea_water_2",                "-dxt5 -nomipmap" },
-		//    { "Wall_Castle",                "-dxt5 -nomipmap" },
-		//    { "Wall_Cave",                  "-dxt5 -nomipmap" },
-		//    { "Wall_Cloud",                 "-dxt5 -nomipmap" },
-		//    { "Wall_Forest",                "-dxt5 -nomipmap" },
-		//    { "Wall_Hills",                 "-dxt5 -nomipmap" },
-		//    { "Wall_Sea",                   "-dxt5 -nomipmap" },
-
-		//    // DXT5, no mipmaps
-		//    { "castle_lava",    "-dxt5 -nomipmap" },
-
-		//    // Uncompressed, no alpha, no mipmaps
-		//    { "CharSelect",         "-u888 -nomipmap" },
-		//    { "Scene_Kobbler",      "-u888 -nomipmap" },
-		//    { "Scene_Kobbler_Blur", "-u888 -nomipmap" },
-		//    { "Scene_Princess",     "-u888 -nomipmap" },
-		//    { "Title_Screen",       "-u888 -nomipmap" },
-
-		//};
-
-
 namespace ContentBuilder
 {
     class Program
     {
+		static bool args_RedoAll = false;
+		static bool args_RedoDDS = false;
+		static bool args_RedoList = false;
+
+
 		// Content directories
 		const string ContentPath_Source = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Content\";
 		const string ContentPath_Source_Temp = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Content\__premult\";
 
-		const string ContentPath_CPlusPlus = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\Content\";
 		const string ContentPath_WiiU = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\ContentWiiU\";
 		const string ContentPath_PS3 = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\ContentPS3\";
 		const string ContentPath_Xbox = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Cloudberry Kingdom\Cloudberry Kingdom\Content\";
+		const string ContentPath_PC_CPlusPlus = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\Content\";
+		const string ContentPath_PC = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Cloudberry Kingdom\Cloudberry Kingdom\ContentPC\";
 
 		const string LoadListPath = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\Game\ResourceList\Resources_Art.h";
 
@@ -159,7 +56,7 @@ namespace ContentBuilder
 		const string Params_gshConverter = @"-v ""{0}"" -p ""{1}"" -o ""{2}""";
 
 		// PS3 Shader Compiler
-		static string ShaderSourceDir = Path.Combine(ContentPath_Source, "Shader");
+		static string ShaderSourceDir = Path.Combine(ContentPath_Source, "Shaders");
 		static string Path_sce_cgc = @"sce-cgc";
 		static string Params_sce_cgc_vertex = @"-I """ + ShaderSourceDir + @""" -p sce_vp_rsx -o ""{1}"" -e {2} ""{0}""";
 		static string Params_sce_cgc_pixel =  @"-I """ + ShaderSourceDir + @""" -p sce_fp_rsx -o ""{1}"" -e {2} ""{0}""";
@@ -195,6 +92,10 @@ const int TEXTURE_HEIGHTS[] = {{
 #elif defined(CAFE)
 
 {1}
+
+#else
+
+{2}
 
 #endif
 
@@ -254,6 +155,8 @@ const int TEXTURE_HEIGHTS[] = {{
 		static string GetPath_Xbox_DDS(string path) { return Path.Combine(ContentPath_Xbox, path + ".dds"); }
 		static string GetPath_WiiU_GTX(string path) { return Path.Combine(ContentPath_WiiU, path + ".gtx"); }
 		static string GetPath_PS3_GTF(string path) { return Path.Combine(ContentPath_PS3, path   + ".gtf"); }
+		static string GetPath_PC_CPlusPlus_PNG(string path) { return Path.Combine(ContentPath_PC_CPlusPlus, path + ".png"); }
+		static string GetPath_PC_DDS(string path) { return Path.Combine(ContentPath_PC, path + ".dds"); }
 
 		static string RunCommand(string Executable, string Arguments)
 		{
@@ -306,7 +209,7 @@ const int TEXTURE_HEIGHTS[] = {{
 
 		static Regex FindVertexShaderEntry = new Regex(@"VertexShader = compile VERTEX_SHADER (?<name>.*)\(\)");
 		static Regex FindPixelShaderEntry = new Regex(@"PixelShader = compile PIXEL_SHADER (?<name>.*)\(\)");
-		static string ShaderPS3Dir = Path.Combine(ContentPath_PS3, "Shader");
+		static string ShaderPS3Dir = Path.Combine(ContentPath_PS3, "Shaders");
 		static void CompilePS3Shader(string ShaderPath)
 		{
 			string text = File.ReadAllText(ShaderPath);
@@ -353,7 +256,8 @@ const int TEXTURE_HEIGHTS[] = {{
 			{ "Raw Rgb, no alpha", "-u888" },
 			{ "DXT1", "-dxt1c" },
 			{ "DXT3", "-dxt3" },
-			{ "DXT5", "dxt5" },
+			{ "DXT5", "-dxt5" },
+			{ "R5G6B5", "-u565" },
 		};
 
 		struct AssetInfo_Single
@@ -372,14 +276,15 @@ const int TEXTURE_HEIGHTS[] = {{
 		{
 			public int Width, Height;
 
-			public AssetInfo_Single Xbox, PS3, WiiU;
+			public AssetInfo_Single Xbox, PS3, WiiU, PC;
 			public string Path;
 		}
 
 		static List<AssetInfo> TextureAssets = new List<AssetInfo>(1000);
 		static HashSet<string> XboxFiles = new HashSet<string>(),
 							   PS3Files = new HashSet<string>(),
-							   WiiUFiles = new HashSet<string>();
+							   WiiUFiles = new HashSet<string>(),
+							   PCFiles = new HashSet<string>();
 
 		static DateTime Date(string file)
 		{
@@ -398,6 +303,8 @@ const int TEXTURE_HEIGHTS[] = {{
 
 		static void RemoveFiles(string Root, HashSet<string> ValidRelativePaths)
 		{
+			if (!Directory.Exists(Root)) return;
+
 			List<string> Files = GetFiles(Root, true);
 			foreach (var file in Files)
 			{
@@ -439,8 +346,19 @@ const int TEXTURE_HEIGHTS[] = {{
 			return Path.Combine(root_new, path.Replace(root_original, ""));
 		}
 
+		static void ParseAsset(ref AssetInfo_Single dest, ref AssetInfo_Single _default, object cell1, object cell2, object cell3)
+		{
+			dest.Include = (string)cell1 == " " ? _default.Include : (string)cell1 == "Include";
+			dest.Format  = (string)cell2 == " " ? _default.Format  : (string)cell2;
+			dest.Mipmap  = (string)cell3 == " " ? _default.Mipmap  : (string)cell3 == "Yes";
+		}
+
         static void Main(string[] args)
         {
+			if (args.Length > 0 && args[0] == "1") { args_RedoAll = true; Console.WriteLine("Arguments: Rebuilding all. (Will take a while)"); }
+			if (args.Length > 1 && args[1] == "1") { args_RedoDDS = true; Console.WriteLine("Arguments: Rebuild DDS files. (Will take a while)"); }
+			if (args.Length > 2 && args[2] == "1") { args_RedoList = true; Console.WriteLine("Arguments: Rebuild texture list for C++."); }
+
 			// Compiler shaders
 			List<string> ShaderFiles = GetFiles(Path.Combine(ContentPath_Source, "Shaders"), true);
 			foreach (var file in ShaderFiles)
@@ -453,7 +371,7 @@ const int TEXTURE_HEIGHTS[] = {{
 
 				// For PC C++
 				if (extension == ".ps" || extension == ".vs")
-					CopyIfNewer(file, ChangeRootDirectory(file, ContentPath_Source, ContentPath_CPlusPlus));
+					CopyIfNewer(file, ChangeRootDirectory(file, ContentPath_Source, ContentPath_PC_CPlusPlus));
 
 				// For Xbox
 				if (extension == ".fx")
@@ -466,7 +384,7 @@ const int TEXTURE_HEIGHTS[] = {{
 
 			// Get texture asset list
 			string proj = Path.Combine(ContentPath_Source, @"Proj.xlsx");
-			bool UpdateLoadList = Date(LoadListPath) < Date(proj);
+			bool UpdateLoadList = args_RedoAll || args_RedoList || Date(LoadListPath) < Date(proj);
 			string connection = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=Excel 12.0;", proj);
 
 			var adapter = new OleDbDataAdapter("SELECT * FROM [Files$]", connection);
@@ -481,23 +399,28 @@ const int TEXTURE_HEIGHTS[] = {{
 			{
 				AssetInfo asset = new AssetInfo();
 
-				asset.Path = (string)d.ItemArray[9];
+				asset.Path = (string)d.ItemArray[15];
 				asset.Path = asset.Path.Replace('/', '\\');
-				
-				asset.Xbox.Include			= (string)d.ItemArray[0] == "Include";
-				asset.Xbox.Format			= (string)d.ItemArray[1];
-				asset.Xbox.Mipmap			= (string)d.ItemArray[2] == "Yes";
+
+				// Get defaults
+				AssetInfo_Single Default = new AssetInfo_Single();
+				ParseAsset(ref Default, ref Default, d.ItemArray[12], d.ItemArray[13], d.ItemArray[14]);
+
+				// Xbox
+				ParseAsset(ref asset.Xbox, ref Default, d.ItemArray[0], d.ItemArray[1], d.ItemArray[2]);
 				if (asset.Xbox.Include) XboxFiles.Add(asset.Path);
 
-				asset.PS3.Include			= (string)d.ItemArray[3] == "Include";
-				asset.PS3.Format			= (string)d.ItemArray[4];
-				asset.PS3.Mipmap			= (string)d.ItemArray[5] == "Yes";
+				// PS3
+				ParseAsset(ref asset.PS3, ref Default, d.ItemArray[3], d.ItemArray[4], d.ItemArray[5]);
 				if (asset.PS3.Include) PS3Files.Add(asset.Path);
 
-				asset.WiiU.Include			= (string)d.ItemArray[6] == "Include";
-				asset.WiiU.Format			= (string)d.ItemArray[7];
-				asset.WiiU.Mipmap			= (string)d.ItemArray[8] == "Yes";
+				// WiiU
+				ParseAsset(ref asset.WiiU, ref Default, d.ItemArray[6], d.ItemArray[7], d.ItemArray[8]);
 				if (asset.WiiU.Include) WiiUFiles.Add(asset.Path);
+
+				// PC
+				ParseAsset(ref asset.PC, ref Default, d.ItemArray[9], d.ItemArray[10], d.ItemArray[11]);
+				if (asset.PC.Include) PCFiles.Add(asset.Path);
 
 				if (UpdateLoadList)
 				{
@@ -519,7 +442,7 @@ const int TEXTURE_HEIGHTS[] = {{
 				{
 					if (file.PS3.Include)
 					{
-						TextureList_PS3 += string.Format("L\"{0}\",\n", file.Path);
+						TextureList_PS3 += string.Format("L\"{0}\",\n", file.Path.Replace("\\", "/"));
 						TextureList_Width_PS3 += string.Format("{0},\n", file.Width);
 						TextureList_Height_PS3 += string.Format("{0},\n", file.Height);
 					}
@@ -533,14 +456,28 @@ const int TEXTURE_HEIGHTS[] = {{
 				{
 					if (file.WiiU.Include)
 					{
-						TextureList_WiiU += string.Format("L\"{0}\",\n", file.Path);
+						TextureList_WiiU += string.Format("L\"{0}\",\n", file.Path.Replace("\\", "/"));
 						TextureList_Width_WiiU += string.Format("{0},\n", file.Width);
 						TextureList_Height_WiiU += string.Format("{0},\n", file.Height);
 					}
 				}
 				TextureList_WiiU = string.Format(LoadListTemplate_SingleBuild, TextureList_WiiU, TextureList_Width_WiiU, TextureList_Height_WiiU);
 
-				string TextureList = string.Format(LoadListTemplate, TextureList_PS3, TextureList_WiiU);
+				string TextureList_PC = "";
+				string TextureList_Width_PC = "";
+				string TextureList_Height_PC = "";
+				foreach (var file in TextureAssets)
+				{
+					if (file.PC.Include)
+					{
+						TextureList_PC += string.Format("L\"{0}\",\n", file.Path.Replace("\\", "/"));
+						TextureList_Width_PC += string.Format("{0},\n", file.Width);
+						TextureList_Height_PC += string.Format("{0},\n", file.Height);
+					}
+				}
+				TextureList_PC = string.Format(LoadListTemplate_SingleBuild, TextureList_PC, TextureList_Width_PC, TextureList_Height_PC);
+
+				string TextureList = string.Format(LoadListTemplate, TextureList_PS3, TextureList_WiiU, TextureList_PC);
 				File.WriteAllText(LoadListPath, TextureList);
 			}
 
@@ -548,6 +485,8 @@ const int TEXTURE_HEIGHTS[] = {{
 			List<string> Files = GetFiles(ContentPath_Source, true);
 			foreach (var file in Files)
 			{
+				if (file.Contains("__ContentBuilder")) continue;
+
 				string extension = Path.GetExtension(file).ToLower();
 				if (FileTypes.Contains(extension))
 				{
@@ -564,6 +503,12 @@ const int TEXTURE_HEIGHTS[] = {{
 					string ps3_dest = Path.Combine(ContentPath_PS3, relative_path);
 					CopyIfNewer(file, ps3_dest);
 					PS3Files.Add(relative_path);
+
+					string pc_dest = Path.Combine(ContentPath_PC, relative_path);
+					CopyIfNewer(file, pc_dest);
+					string pc_cplusplus_dest = Path.Combine(ContentPath_PC_CPlusPlus, relative_path);
+					CopyIfNewer(file, pc_cplusplus_dest);
+					PCFiles.Add(relative_path);
 				}
 			}
 
@@ -571,6 +516,8 @@ const int TEXTURE_HEIGHTS[] = {{
 			RemoveFiles(ContentPath_Xbox, XboxFiles);
 			RemoveFiles(ContentPath_PS3, PS3Files);
 			RemoveFiles(ContentPath_WiiU, WiiUFiles);
+			RemoveFiles(ContentPath_PC_CPlusPlus, PCFiles);
+			RemoveFiles(ContentPath_PC, PCFiles);
 
 			// Convert and place all texture assets
             foreach (var asset in TextureAssets)
@@ -583,37 +530,48 @@ const int TEXTURE_HEIGHTS[] = {{
                 string path_xbox_dds = GetPath_Xbox_DDS(asset.Path);
 				string path_ps3_gtf =  GetPath_PS3_GTF(asset.Path);
 				string path_wiiu_gtx = GetPath_WiiU_GTX(asset.Path);
+				string path_pc_cplusplus_png = GetPath_PC_CPlusPlus_PNG(asset.Path);
+				string path_pc_dds = GetPath_PC_DDS(asset.Path);
 
 				bool Cascade = false;
-                if ( Date(temp_premult) < Date(source) )
+				if (args_RedoAll || Date(temp_premult) < Date(source))
                 {
 					ConvertToPremultiplied(source, temp_premult);
 
 					Cascade = true;
                 }
-                
+
 				if (asset.Xbox.Include)
-				if (Cascade || Date(path_xbox_dds) < source_date)
+				if (args_RedoAll || args_RedoDDS || Cascade || Date(path_xbox_dds) < source_date)
                 {
                     ConvertToDds(asset.Xbox, temp_premult, temp_dds);
 					Copy(temp_dds, path_xbox_dds);
                 }
 
-				if (asset.PS3.Include)
-				if (Cascade || Date(path_ps3_gtf) < source_date)
-                {
-					if (asset.PS3.GetDssFormat() != asset.Xbox.GetDssFormat() || !File.Exists(temp_dds))
-						ConvertToDds(asset.PS3, temp_premult, temp_dds);
+				if (asset.PC.Include)
+				if (args_RedoAll || Cascade || Date(path_pc_cplusplus_png) < source_date)
+				{
+					Copy(temp_premult, path_pc_cplusplus_png);
+				}
+                
+				if (asset.PC.Include)
+				if (args_RedoAll || args_RedoDDS || Cascade || Date(path_pc_dds) < source_date)
+				{
+					ConvertToDds(asset.PC, temp_premult, temp_dds);
+					Copy(temp_dds, path_pc_dds);
+				}
 
+				if (asset.PS3.Include)
+				if (args_RedoAll || args_RedoDDS || Cascade || Date(path_ps3_gtf) < source_date)
+                {
+					ConvertToDds(asset.PS3, temp_premult, temp_dds);
                     ConvertToGtf(temp_dds, path_ps3_gtf);
                 }
 
 				if (asset.WiiU.Include)
-				if (Cascade || Date(path_wiiu_gtx) < source_date)
+				if (args_RedoAll || args_RedoDDS || Cascade || Date(path_wiiu_gtx) < source_date)
                 {
-					if (asset.WiiU.GetDssFormat() != asset.PS3.GetDssFormat() || !File.Exists(temp_dds))
-						ConvertToDds(asset.WiiU, temp_premult, temp_dds);
-
+					ConvertToDds(asset.WiiU, temp_premult, temp_dds);
                     ConvertToGtx(temp_dds, path_wiiu_gtx);
                 }
             }

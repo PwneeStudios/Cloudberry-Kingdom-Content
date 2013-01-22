@@ -277,7 +277,16 @@ const int TEXTURE_HEIGHTS[] = {{
 			public int Width, Height;
 
 			public AssetInfo_Single Xbox, PS3, WiiU, PC;
-			public string Path;
+			public string FilePath;
+
+			public int GetWidth()
+			{
+				if (Width > 0) return Width;
+
+				Width = new Bitmap(Path.Combine(ContentPath_Source, FilePath + ".png")).Width;
+				
+				return Width;
+			}
 		}
 
 		static List<AssetInfo> TextureAssets = new List<AssetInfo>(1000);
@@ -353,7 +362,85 @@ const int TEXTURE_HEIGHTS[] = {{
 			dest.Mipmap  = (string)cell3 == " " ? _default.Mipmap  : (string)cell3 == "Yes";
 		}
 
-        static void Main(string[] args)
+		static byte[] Flip(byte[] b, int start, int n)
+		{
+			byte[] flipped = new byte[n];
+			for (int i = 0; i < n; i++)
+				flipped[i] = b[start + n - 1 - i];
+			return flipped;
+		}
+
+		static uint BitConvert_UInt32(byte[] b, int start)
+		{
+			return BitConverter.ToUInt32(Flip(b, start, 4), 0);
+		}
+
+		static UInt16 BitConvert_UInt16(byte[] b, int start)
+		{
+			return BitConverter.ToUInt16(Flip(b, start, 2), 0);
+		}
+
+		static void Swap(ref byte b1, ref byte b2)
+		{
+			byte temp = b2;
+			b2 = b1;
+			b1 = temp;
+		}
+
+		static void PadPngWidth(string source, string dest)
+		{
+			var bitmap = new Bitmap(source);
+
+			var padded = new Bitmap(bitmap.Width + 1, bitmap.Height);
+			
+			for (int i = 0; i < bitmap.Width; i++)
+				for (int j = 0; j < bitmap.Height; j++)
+					padded.SetPixel(i, j, bitmap.GetPixel(i, j));
+
+			for (int j = 0; j < bitmap.Height; j++)
+				padded.SetPixel(bitmap.Width, j, Color.Transparent);
+
+			padded.Save(dest);
+		}
+
+		static void ChangeGtfWidth(string path_gtf, int new_width)
+		{
+			byte[] b = File.ReadAllBytes(path_gtf);
+
+			//uint Version = BitConvert_UInt32(b, 0);
+			//uint Size = BitConvert_UInt32(b, 4);
+			//uint NumTexture = BitConvert_UInt32(b, 8);
+
+			//uint Id = BitConvert_UInt32(b, 12);
+			//uint OffsetToTex = BitConvert_UInt32(b, 16);
+			//uint TextureSize = BitConvert_UInt32(b, 20);
+
+			//byte format = b[24];
+			//byte mipmap = b[25];
+			//byte dimension = b[26];
+			//byte cubemap = b[27];
+			//uint remap = BitConvert_UInt32(b, 28);
+			UInt16 width = BitConvert_UInt16(b, 32);
+			//UInt16 height = BitConvert_UInt16(b, 34);
+
+			//UInt16 depth = BitConvert_UInt16(b, 36);
+			//byte location = b[38];
+			//byte _padding = b[39];
+
+			//uint pitch = BitConvert_UInt32(b, 40);
+			//uint offset = BitConvert_UInt32(b, 44);
+
+			// Set width
+			BitConverter.GetBytes((UInt16)new_width).CopyTo(b, 32);
+			Swap(ref b[32], ref b[33]);
+
+			//width = BitConvert_UInt16(b, 32);
+			//height = BitConvert_UInt16(b, 34);
+
+			File.WriteAllBytes(path_gtf, b);
+		}
+
+		static void Main(string[] args)
         {
 			if (args.Length > 0 && args[0] == "1") { args_RedoAll = true; Console.WriteLine("Arguments: Rebuilding all. (Will take a while)"); }
 			if (args.Length > 1 && args[1] == "1") { args_RedoDDS = true; Console.WriteLine("Arguments: Rebuild DDS files. (Will take a while)"); }
@@ -399,8 +486,8 @@ const int TEXTURE_HEIGHTS[] = {{
 			{
 				AssetInfo asset = new AssetInfo();
 
-				asset.Path = (string)d.ItemArray[15];
-				asset.Path = asset.Path.Replace('/', '\\');
+				asset.FilePath = (string)d.ItemArray[15];
+				asset.FilePath = asset.FilePath.Replace('/', '\\');
 
 				// Get defaults
 				AssetInfo_Single Default = new AssetInfo_Single();
@@ -408,23 +495,23 @@ const int TEXTURE_HEIGHTS[] = {{
 
 				// Xbox
 				ParseAsset(ref asset.Xbox, ref Default, d.ItemArray[0], d.ItemArray[1], d.ItemArray[2]);
-				if (asset.Xbox.Include) XboxFiles.Add(asset.Path);
+				if (asset.Xbox.Include) XboxFiles.Add(asset.FilePath);
 
 				// PS3
 				ParseAsset(ref asset.PS3, ref Default, d.ItemArray[3], d.ItemArray[4], d.ItemArray[5]);
-				if (asset.PS3.Include) PS3Files.Add(asset.Path);
+				if (asset.PS3.Include) PS3Files.Add(asset.FilePath);
 
 				// WiiU
 				ParseAsset(ref asset.WiiU, ref Default, d.ItemArray[6], d.ItemArray[7], d.ItemArray[8]);
-				if (asset.WiiU.Include) WiiUFiles.Add(asset.Path);
+				if (asset.WiiU.Include) WiiUFiles.Add(asset.FilePath);
 
 				// PC
 				ParseAsset(ref asset.PC, ref Default, d.ItemArray[9], d.ItemArray[10], d.ItemArray[11]);
-				if (asset.PC.Include) PCFiles.Add(asset.Path);
+				if (asset.PC.Include) PCFiles.Add(asset.FilePath);
 
 				if (UpdateLoadList)
 				{
-					var size = Load(Path.Combine(ContentPath_Source, asset.Path + ".png")).Size;
+					var size = Load(Path.Combine(ContentPath_Source, asset.FilePath + ".png")).Size;
 					asset.Width = size.Width;
 					asset.Height = size.Height;
 				}
@@ -442,7 +529,7 @@ const int TEXTURE_HEIGHTS[] = {{
 				{
 					if (file.PS3.Include)
 					{
-						TextureList_PS3 += string.Format("L\"{0}\",\n", file.Path.Replace("\\", "/"));
+						TextureList_PS3 += string.Format("L\"{0}\",\n", file.FilePath.Replace("\\", "/"));
 						TextureList_Width_PS3 += string.Format("{0},\n", file.Width);
 						TextureList_Height_PS3 += string.Format("{0},\n", file.Height);
 					}
@@ -456,7 +543,7 @@ const int TEXTURE_HEIGHTS[] = {{
 				{
 					if (file.WiiU.Include)
 					{
-						TextureList_WiiU += string.Format("L\"{0}\",\n", file.Path.Replace("\\", "/"));
+						TextureList_WiiU += string.Format("L\"{0}\",\n", file.FilePath.Replace("\\", "/"));
 						TextureList_Width_WiiU += string.Format("{0},\n", file.Width);
 						TextureList_Height_WiiU += string.Format("{0},\n", file.Height);
 					}
@@ -470,7 +557,7 @@ const int TEXTURE_HEIGHTS[] = {{
 				{
 					if (file.PC.Include)
 					{
-						TextureList_PC += string.Format("L\"{0}\",\n", file.Path.Replace("\\", "/"));
+						TextureList_PC += string.Format("L\"{0}\",\n", file.FilePath.Replace("\\", "/"));
 						TextureList_Width_PC += string.Format("{0},\n", file.Width);
 						TextureList_Height_PC += string.Format("{0},\n", file.Height);
 					}
@@ -522,16 +609,16 @@ const int TEXTURE_HEIGHTS[] = {{
 			// Convert and place all texture assets
             foreach (var asset in TextureAssets)
             {
-				string source = SourcePath(asset.Path);
-                string temp_premult = TempPremultPath(asset.Path);
-				string temp_dds = TempDDSPath(asset.Path);
+				string source = SourcePath(asset.FilePath);
+                string temp_premult = TempPremultPath(asset.FilePath);
+				string temp_dds = TempDDSPath(asset.FilePath);
 				DateTime source_date = Date(source);
 
-                string path_xbox_dds = GetPath_Xbox_DDS(asset.Path);
-				string path_ps3_gtf =  GetPath_PS3_GTF(asset.Path);
-				string path_wiiu_gtx = GetPath_WiiU_GTX(asset.Path);
-				string path_pc_cplusplus_png = GetPath_PC_CPlusPlus_PNG(asset.Path);
-				string path_pc_dds = GetPath_PC_DDS(asset.Path);
+                string path_xbox_dds = GetPath_Xbox_DDS(asset.FilePath);
+				string path_ps3_gtf =  GetPath_PS3_GTF(asset.FilePath);
+				string path_wiiu_gtx = GetPath_WiiU_GTX(asset.FilePath);
+				string path_pc_cplusplus_png = GetPath_PC_CPlusPlus_PNG(asset.FilePath);
+				string path_pc_dds = GetPath_PC_DDS(asset.FilePath);
 
 				bool Cascade = false;
 				if (args_RedoAll || Date(temp_premult) < Date(source))
@@ -564,8 +651,25 @@ const int TEXTURE_HEIGHTS[] = {{
 				if (asset.PS3.Include)
 				if (args_RedoAll || args_RedoDDS || Cascade || Date(path_ps3_gtf) < source_date)
                 {
-					ConvertToDds(asset.PS3, temp_premult, temp_dds);
+					string temp_premult_ps3 = temp_premult;
+
+					// If the PNG is uncompressed RGBA and doesn't have an even width, pad the width
+					bool pad = false;
+					if (asset.PS3.Format == "Raw Rgba" && asset.GetWidth() % 2 == 1) pad = true;
+					
+					if (pad)
+					{
+						temp_premult_ps3 = Path.Combine(Path.GetDirectoryName(temp_premult), Path.GetFileNameWithoutExtension(temp_premult) + " (width padded).png");
+						PadPngWidth(temp_premult, temp_premult_ps3);
+					}
+
+					ConvertToDds(asset.PS3, temp_premult_ps3, temp_dds);
                     ConvertToGtf(temp_dds, path_ps3_gtf);
+
+					if (pad)
+					{
+						ChangeGtfWidth(path_ps3_gtf, asset.Width);
+					}
                 }
 
 				if (asset.WiiU.Include)

@@ -89,6 +89,8 @@ const int TEXTURE_HEIGHTS[] = {{
 
 {0}
 
+{3}
+
 #elif defined(CAFE)
 
 {1}
@@ -101,6 +103,11 @@ const int TEXTURE_HEIGHTS[] = {{
 
 #endif
 ";
+
+		const string LoadListTemplate_VideoMemory = @"
+const bool *VIDEO_MEMORY[] = {{
+{0}
+}};";
 
         public static List<string> GetFiles(string path, bool IncludeSubdirectories)
         {
@@ -278,6 +285,8 @@ const int TEXTURE_HEIGHTS[] = {{
 
 			public AssetInfo_Single Xbox, PS3, WiiU, PC;
 			public string FilePath;
+
+			public bool VideoMemory;
 
 			public int GetWidth()
 			{
@@ -492,6 +501,7 @@ const int TEXTURE_HEIGHTS[] = {{
 				// Get defaults
 				AssetInfo_Single Default = new AssetInfo_Single();
 				ParseAsset(ref Default, ref Default, d.ItemArray[12], d.ItemArray[13], d.ItemArray[14]);
+				asset.VideoMemory = ((string)d.ItemArray[16]) == "Yes";
 
 				// Xbox
 				ParseAsset(ref asset.Xbox, ref Default, d.ItemArray[0], d.ItemArray[1], d.ItemArray[2]);
@@ -525,6 +535,7 @@ const int TEXTURE_HEIGHTS[] = {{
 				string TextureList_PS3 = "";
 				string TextureList_Width_PS3 = "";
 				string TextureList_Height_PS3 = "";
+				string TextureList_VideoMemory = "";
 				foreach (var file in TextureAssets)
 				{
 					if (file.PS3.Include)
@@ -532,9 +543,11 @@ const int TEXTURE_HEIGHTS[] = {{
 						TextureList_PS3 += string.Format("L\"{0}\",\n", file.FilePath.Replace("\\", "/"));
 						TextureList_Width_PS3 += string.Format("{0},\n", file.Width);
 						TextureList_Height_PS3 += string.Format("{0},\n", file.Height);
+						TextureList_VideoMemory += string.Format("{0},\n", file.VideoMemory ? "true" : "false" );
 					}
 				}
 				TextureList_PS3 = string.Format(LoadListTemplate_SingleBuild, TextureList_PS3, TextureList_Width_PS3, TextureList_Height_PS3);
+				TextureList_VideoMemory = string.Format(LoadListTemplate_VideoMemory, TextureList_VideoMemory);
 
 				string TextureList_WiiU = "";
 				string TextureList_Width_WiiU = "";
@@ -564,7 +577,7 @@ const int TEXTURE_HEIGHTS[] = {{
 				}
 				TextureList_PC = string.Format(LoadListTemplate_SingleBuild, TextureList_PC, TextureList_Width_PC, TextureList_Height_PC);
 
-				string TextureList = string.Format(LoadListTemplate, TextureList_PS3, TextureList_WiiU, TextureList_PC);
+				string TextureList = string.Format(LoadListTemplate, TextureList_PS3, TextureList_WiiU, TextureList_PC, TextureList_VideoMemory);
 				File.WriteAllText(LoadListPath, TextureList);
 			}
 

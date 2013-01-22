@@ -33,7 +33,7 @@ Accept	Accept	Accept	受け入れる	Akzeptieren	Aceitar	Accettare	Accepter	Acep
 Back	Back	Back	バック	Zurück	De volta	Indietro	Arrière	Espalda	Назад	뒤로	背面
 Menu	Menu	Menu	メニュー	Menü	Menu	Menu	Menu	Menú	Меню	메뉴	菜单
 Reset	Reset	Reset	リセット	Rücksetzen	Restabelecer	Reset	Remettre	Reajustar	Сброс	재설정	复位
-Press A to Join	PressToJoin	Press A to Join	参加するには、を押し	A drücken, um Mitglied	Pressione A para Aderir	Premere A per iscriverti	Appuyez sur A pour inscription	Presione A para unirse	Нажмите для регистрации	가입하려면 버튼을 누르세요	按A注册
+Press A to Join	PressToJoin	Press\n{0}\nto Join	参加す\n{0}\nるには、を押し	A drücken, um Mitglied	Pressione\n{0}\npara Aderir	Premere\n{0}\nper iscriverti	Appuyez sur\n{0}\npour inscription	Presione\n{0}\npara unirse	Нажмите для регистрации	가입하려면 버튼을 누르세요	按A注册
 Custom	Custom	Custom	カスタム	Brauch	Personalizado	Costume	Coutume	Costumbre	Обычай	관습	习惯
 Random	Random	Random	ランダム	Zufällig	Acaso	Casuale	Aléatoire	Azar	Случайный	무작위	随机
 Done	Done	Done	完了	Erledigt	Feito	Fatto	Fini	Hecho	Сделанный	끝난	完成

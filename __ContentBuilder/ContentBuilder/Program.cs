@@ -16,7 +16,7 @@ using System.Data.OleDb;
 
 namespace ContentBuilder
 {
-    class Program
+    class ContentBuilder
     {
 		static bool args_RedoAll = false;
 		static bool args_RedoDDS = false;
@@ -703,6 +703,7 @@ const bool *VIDEO_MEMORY[] = {{
 		{
 			string MasterPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "Translation Master.xlsx"));
 			string TsvPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "Localization.tsv"));
+			string TsvCppPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "LocalizationCpp.tsv"));
 			
 			bool UpdateLanguageFile = args_RedoAll || Date(TsvPath) < Date(MasterPath);
 			if (!UpdateLanguageFile) return;
@@ -721,12 +722,17 @@ const bool *VIDEO_MEMORY[] = {{
 			string text = "";
 			foreach (var d in data)
 			{
-				for (int i = 0; i < d.ItemArray.Length; i++)
+				for (int i = 1; i < d.ItemArray.Length; i++)
 					text += (string)d.ItemArray[i] + '\t';
 				text += '\n';
 			}
 
 			File.WriteAllText(TsvPath, text);
+
+			// Convert for printf
+			text = text.Replace("{0}", "%s");
+			text = text.Replace("{1}", "%s");
+			File.WriteAllText(TsvCppPath, text);
 		}
     }
 }

@@ -33,7 +33,7 @@ Accept	承認	Bestätigen	Aceitar	Accetta	Accepter	Aceptar	Принять	동의
 Back	戻る	Zurück	Voltar	Indietro	Retour	Atrás	Назад	뒤로	背面	
 Menu	メニュー	Menü	Menu	Menù	Menu	Menú	Меню	메뉴	菜单	
 Reset	リセット	Zurücksetzen	Resetar	Reset	Reset	Reset	Перезагрузить	재설정	复位	
-Press\n{0}\nto Join	{0}ボタン\nでゲーム\nに参加できます	Drücke\n{0}\num mitzuspielen	Aperte\n{0}\npara entrar	Premi\n{0}\nper partecipare	Appuie sur\n{0}\npour commencer !	Presione {0}	Нажмете\n{0}\nчтобы\nприсоединится	보도 \ n {0} \ n 인물 가입	按\ n {0} \ n要加入	
+Press\n%s\nto Join	%sボタン\nでゲーム\nに参加できます	Drücke\n%s\num mitzuspielen	Aperte\n%s\npara entrar	Premi\n%s\nper partecipare	Appuie sur\n%s\npour commencer !	Presione %s	Нажмете\n%s\nчтобы\nприсоединится	보도 \ n %s \ n 인물 가입	按\ n %s \ n要加入	
 Customize	カスタム	Anpassen	Personalizar	Costume	Personnaliser	Custom	Настроить	관습	习惯	
 Random	ランダム	Zufällig	Aleatório	Casuale	Aléatoire	Random	Наугад	무작위	随机	
 Done	完了	Fertig	Pronto!	Fatto	Ok/Valider	Listo	Готово	끝난	完成	
@@ -209,12 +209,12 @@ Level	レベル	Level	Nível	Livello	Niveau	Puntaje	Уровень	한 생활	+1
 Ready?	Ready?	Bist du soweit? 	Prepara e...	Pronto?	Prêt ?	Listo?	Готов?	키를 눌러	按	
 Go!	Go!	Dann los! 	Vai!	Via!	Go !	Vamos!	Вперёд!	다시 시작하다	恢复	
 Get to the exit!	出口へ急げ！	Beweg dich in Richtung Ausgang ! 	Vá para a saída	Raggiungi l'uscita!	Rejoins la sortie!	Llega a la salida!	Быстрей на выход!	통계	统计	
-seconds on the clock!	残り{0}秒！	Noch {0} Sekunden! 	{0} segundos pra encerrar!	{0} secondi dell'orologio	Encore {0} secondes!	{0} segundos en el reloj!	Осталось {0} секунд!	저장 /로드	保存/载入	
+seconds on the clock!	残り%s秒！	Noch %s Sekunden! 	%s segundos pra encerrar!	%s secondi dell'orologio	Encore %s secondes!	%s segundos en el reloj!	Осталось %s секунд!	저장 /로드	保存/载入	
 Coins add seconds to the clock	コインで時間を追加できる	Münzen kaufen dir Zeit	Moedas adicionam segundos ao relógio	I gettoni aggiungono secondi all'orologio	Gagne du temps!	Monedas agregan segundos al reloj 	Монеты добавляют время в отчёт	Me를 제거	删除我	
 Get a high score!	ハイスコアを狙え！	Hol' viele Punkte! 	Batalhe pelo Recorde!	Ottieni un punteggio alto!	Fais un gros score!	Vamos por el highscore!	Поставь рекорд!	수준을 종료	出口级	
 Perfect!	パーフェクト！	Super! 	Perfeito!	Ottimo!	Parfait!	Perfecto!	Идиально!	임의의 종자	随机种子	
 +1 Life	１ＵP	+1 Leben extra	+1 Vida!	Vita +1	1UP	+1 Vida	+1 Жизнь	종자를 저장	保存种子	
-Press	{0}ボタンを押す	Drücke {0} 	Aperte {0}	Premi {0}	Appuie sur {0}	Presione {0}	Нажми {0}	로드 씨	负载种子	
+Press	%sボタンを押す	Drücke %s 	Aperte %s	Premi %s	Appuie sur %s	Presione %s	Нажми %s	로드 씨	负载种子	
 Resume	続ける	Fortsetzen	Continuar	Riprendi	Reprendre	Reanudar	Продолжить	클립 보드에 복사	复制到剪贴板	
 Statistics	統計	Statistik	Estatísticas	Statistiche	Stats	Estadisticas	Статистика	클립 보드에서로드	负载从剪贴板	
 Save/Load	保存/ロード	Speichern/Laden	Salvar/Carregar	Salva/Carica	Sauvegarder/Charger	Guardar/Cargar	Сохранить/Загрузить	플레이어를 제거	删除播放器	
@@ -225,7 +225,7 @@ Save Seed	シードを保存	Anlaufwert speichern	Salvar Senha	Salva seme	Sauveg
 Load Seed	シードを読み込む	Anlaufwert laden 	Carregar Senha	Carica seme	Charger le code ?	Cargar Codigo	Загрузить	씨앗이 성공적으로 저장되었습니다!	种子保存成功！	
 Copy to clipboard	クリップボードにコピーする	In Zwischenablage kopieren	Copiar para Área de Transferência	Copia sugli appunti	Copier dans le presse-papiers	Copiar al clipboard	Copy to clipboard	만세!	万岁！	
 Load from clipboard	クリップボードから読み込む	Aus Zwischenablage laden	Carregar da Área de Transferência	Carica dagli appunti	Charger depuis le presse-papier	Cargar del clipboard	Load from clipboard	어떤 이름이 주어지지, 종자가 저장되지 않았습니다.	没有名字，种子没有被保存。	
-Remove Player	{0}を外す	Spieler {0} entfernen ? 	Remover Jogador {0}?	Elimina giocatore {0}?	Enlever le joueur {0} ?	Remover Jugador {0}?	Исключить игрока  {0}?	오.	哦。	
+Remove Player	%sを外す	Spieler %s entfernen ? 	Remover Jogador %s?	Elimina giocatore %s?	Enlever le joueur %s ?	Remover Jugador %s?	Исключить игрока  %s?	오.	哦。	
 Exit level?	レベルを中断しますか？	Das Level beenden? 	Sair da Fase?	Abbandonare il livello?	Quitter le niveau ?	Salir del Nivel?	Покинуть уровень?	레벨 이길	水平打	
 Save Random Seed as...	ランダムシードに名前をつけて保存する	Zufälligen Anlaufwert als …. speichern 	Salvar Senha de Fase como...	Salva seme casuale come...	Sauvegarder le code sous ...	Guardar código random como…	Сохранить как…	점프	跳转	
 Saved Seeds	保存されたシード	Anlaufwerte speichern	Senhas salvas	Semi salvati	Codes sauvegardés	Códigos Guardados	Сохранённые	동전	硬币	
@@ -265,7 +265,7 @@ Local	ローカル	Lokal	Local	Locale	Local	Local	Местный	설정을 유�
 Global	グローバル	Global	Global	Globale	Global	Global	Глобальный	재생보기	观看重播	
 Watch the computer to see how it's done!	お手本をみる	Zuschauen wie es der Computer macht	Ver o computador para saber como se joga	Guarda il computer per vedere come si fa.	Regarde comment fait l'ordinateur	Mira como se hace! 	Посмотрим как у компьютера дела	Freeplay로 돌아 가기	后以自由行动	
 Show a path through the level while you play.	道しるべを表示する	Pfad durch das Level anzeigen während du spielst	Traçar um caminho pra ser seguido durante a fase	Mostra un percorso lungo il livello mentre giochi.	Suis le chemin pendant le jeu	Mostrar mapa mientras juegas 	Указывай как пройти уровень во время игры	중지	暂停	
-Activate slow motion!	スローモーション！　交互に{0}を押す。	Zeitlupenmodus aktivieren! Umschalten mit {0}	Ativar câmera lenta! Liga / desliga com  {0}	Attiva slow motion, alterna con {0}	Bascule en slow motion ! Active et désactive avec {0}	Activar modo lento! Alternar con 	Замедлить! Включить	하나의	单	
+Activate slow motion!	スローモーション！　交互に%sを押す。	Zeitlupenmodus aktivieren! Umschalten mit %s	Ativar câmera lenta! Liga / desliga com  %s	Attiva slow motion, alterna con %s	Bascule en slow motion ! Active et désactive avec %s	Activar modo lento! Alternar con 	Замедлить! Включить	하나의	单	
 Paused	停止中	Pause	Pausa	Pausa	Pause	Pausado	Пауза	이전	上一页	
 Speed	スピード	Schnelligkeit	Velocidade do replay	Velocità	Vitesse	Velocidad	Скорость	모든	所有	
 Step	次へ	Nächster Schritt	Próximo frame	Passo	Suivant	Siguiente marco	Шаг вперед	끝	结束	
@@ -277,8 +277,8 @@ Pause	停止	Pause 	Pausa	Pausa	Pause	Pausa	Пауза	판매 모자!	帽子可�
 Single	シングル	Einzel 	Última	Singolo	Seul	Single	Одиночный	은행	银行	
 Prev	前回	Vorheriges 	Voltar	Precedente	Précédent	Previo	Предварительная	성취	成就	
 All	全部	Alle	Todas	Tutto	Tous	Todo	Все	성취 잠금 해제	成就解锁	
-End	終わる	Beenden	Sair	Fine	Terminer	Final	Конец	{0} 시드를 삭제 하시겠습니까?	删除{0}种子吗？	
-Loading	読み込み中	Wird geladen	Carregando	Caricamento	Chargement	Cargando	Грузится	{0} 종자를 삭제 하시겠습니까?	删除{0}种子？	
+End	終わる	Beenden	Sair	Fine	Terminer	Final	Конец	%s 시드를 삭제 하시겠습니까?	删除%s种子吗？	
+Loading	読み込み中	Wird geladen	Carregando	Caricamento	Chargement	Cargando	Грузится	%s 종자를 삭제 하시겠습니까?	删除%s种子？	
 Hero unlocked!	ヒーローが解除されました！	Held ist freigeschaltet!	Herói desbloqueado	Eroe sbloccato	Héro débloqué!	Héroe desbloqueado!	Герой открыт!	배율이 증가!	倍数增加！	
 New hero unlocked!	新しいヒーロが解除されました！	Neuer Held ist freigeschaltet	Novo herói desbloqueado!	Nuovo eroe sbloccato	Nouveau héro débloqué!	Nuevo héroe desbloqueado!	Новый герой открыт!	새로운 영웅 해제!	新英雄解锁！	
 Hero in the making	ヒーローへの道	Der werdende Held	Herói em processo	Eroe in formazione	Héro en construction	Heroe en Proceso	Герой почти готов	제작의 영웅	在本作中的英雄	
@@ -323,13 +323,13 @@ Buy	購入	Kaufen	Comprar	Compra	Acheter	Compra	Купить	사기	购买
 Bank	銀行	Bank	Banco	Banca	Banque	Banco	Банк	은행	银行	
 Achievement	アチーブメント	Belohnung	Conquista	Conquiste	Réalisation	Logro	Достижение	성취	成就	
 Achievement Unlocked	アチーブメントが解除されました	Belohnung freigeschaltet	Conquista Desbloqueada	Conquista sbloccata	Réalisation débloquée	Logro desbloqueado	Достижение Достигнуто	성취 잠금 해제	成就解锁	
-Delete {0} seed?	{0}シードを削除しますか？	Anlaufwert {0} löschen? 	Apagar {0} senha?	Elimina seme?	Annuler le code ?	Borrar {0} código?	Удалить {0} уровень?	{0} 시드를 삭제 하시겠습니까?	删除{0}种子吗？	
-Delete {0} seeds?	{0}シードを削除しますか？	Anlaufwerte {0} löschen? 	Apagar {0} senhas?	Elimina {0} semi?	Annuler les codes ?	Borrar {0} códigos?	Удалить {0} уровньей?	{0} 종자를 삭제 하시겠습니까?	删除{0}种子？	
+Delete %s seed?	%sシードを削除しますか？	Anlaufwert %s löschen? 	Apagar %s senha?	Elimina seme?	Annuler le code ?	Borrar %s código?	Удалить %s уровень?	%s 시드를 삭제 하시겠습니까?	删除%s种子吗？	
+Delete %s seeds?	%sシードを削除しますか？	Anlaufwerte %s löschen? 	Apagar %s senhas?	Elimina %s semi?	Annuler les codes ?	Borrar %s códigos?	Удалить %s уровньей?	%s 종자를 삭제 하시겠습니까?	删除%s种子？	
 Multiplier increased!	ポイント倍増数が増えました	Der Multiplikator ist größer geworden! 	Multiplicador aumentado!	Moltiplicatore aumentato!	Multiplicateur augmenté!	Multiplicador incrementado	Множитель увеличился!	배율이 증가!	倍数增加！	
-Hold {0} to jump higher!	{0}ボタンを長押しして高く飛べ！	Drehe den Kontroller um {0} Grad um höher zu springen! 	Segure {0} para pular alto!	Tieni premuto {0} per saltare più in alto!	Maintiens {0} pour sauter plus haut	Manten {0} para saltar más alto!	Держите {0} чтобы прыгать выше!	{0} 더 높이 점프 할 멈춰!	按住{0}跳得更高！	
-Hold {0} and {0} to respawn quickly!	{0}と{0}を長押しして素早く復活！	Drücke {0} und {1} um wieder von vorn anzufangen	Segure {0} e {1} para reiniciar!	Tieni premuto {0} e {1} per riapparire velocemente!	Maintiens {0} et {1} pour ressusciter plus vite	Manten presionado {0} y {1} para aparecer rápidamente!	Держите {0} и {1} чтобы возродится быстрее!	잡아 {0}과 {0} 빠르게 리젠 수 있습니다!	按住{0}{0}重生的很快！	
-Press {0} to respawn quickly!	スペースキーを押して素早く復活！	Drücke {0} um sofort neuzustarten	Pressione {0} para reinicar!	Premi {0} per riapparire velocemente!	Appuie sur la barre d'Espace pour ressusciter rapidement	Manten presionado {0} para aparecer rápidamente!	Нажмите {0} до возродится быстрее!	빠르게 리젠 할 {0}를 눌러!	按{0}重生快！	
-Press {0} for powerups!	{0}ボタンを押してパワーアップ！	Drücke {0} für die Bonusmenüs 	Pressione {0} para uma ajuda!	Premi {0} per potenziamenti!	Appuie sur {0} pour les power-up!	Presiona {0} para powerups	Нажмите {0} для бонусов!	powerups를 누르면 {0}!	按{0}通电！	
+Hold %s to jump higher!	%sボタンを長押しして高く飛べ！	Drehe den Kontroller um %s Grad um höher zu springen! 	Segure %s para pular alto!	Tieni premuto %s per saltare più in alto!	Maintiens %s pour sauter plus haut	Manten %s para saltar más alto!	Держите %s чтобы прыгать выше!	%s 더 높이 점프 할 멈춰!	按住%s跳得更高！	
+Hold %s and %s to respawn quickly!	%sと%sを長押しして素早く復活！	Drücke %s und %s um wieder von vorn anzufangen	Segure %s e %s para reiniciar!	Tieni premuto %s e %s per riapparire velocemente!	Maintiens %s et %s pour ressusciter plus vite	Manten presionado %s y %s para aparecer rápidamente!	Держите %s и %s чтобы возродится быстрее!	잡아 %s과 %s 빠르게 리젠 수 있습니다!	按住%s%s重生的很快！	
+Press %s to respawn quickly!	スペースキーを押して素早く復活！	Drücke %s um sofort neuzustarten	Pressione %s para reinicar!	Premi %s per riapparire velocemente!	Appuie sur la barre d'Espace pour ressusciter rapidement	Manten presionado %s para aparecer rápidamente!	Нажмите %s до возродится быстрее!	빠르게 리젠 할 %s를 눌러!	按%s重生快！	
+Press %s for powerups!	%sボタンを押してパワーアップ！	Drücke %s für die Bonusmenüs 	Pressione %s para uma ajuda!	Premi %s per potenziamenti!	Appuie sur %s pour les power-up!	Presiona %s para powerups	Нажмите %s для бонусов!	powerups를 누르면 %s!	按%s通电！	
 trophy	トロフィー	Pokal	Troféu	Trofeo	Trophée	Trofeo	Трофей	트로피	杯	
 You have earned a trophy	トロフィーを獲得しました	Du hast einen Pokal gewonnen	Você mereceu um troféu.	Hai ottenuto un trofeo	Tu as remporté un trophée	Has recibido un trofeo	Вы заработали трофей	당신은 트로피를 적립	你赢得了一个冠军奖杯	
 Awardment	アチーブメント	Awardment	prêmio	Premi	Approbation	Logros	!LocalizeMe!	awardment	awardment	

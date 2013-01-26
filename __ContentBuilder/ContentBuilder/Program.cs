@@ -478,6 +478,9 @@ const bool *VIDEO_MEMORY[] = {{
 					CompilePS3Shader(file);
 			}
 
+			// Convert language excel file to unicode tsv
+			ConvertMasterLocalization();
+
 			// Get texture asset list
 			string proj = Path.Combine(ContentPath_Source, @"Proj.xlsx");
 			bool UpdateLoadList = args_RedoAll || args_RedoList || Date(LoadListPath) < Date(proj);
@@ -695,5 +698,35 @@ const bool *VIDEO_MEMORY[] = {{
 
             Console.WriteLine("Done!");
         }
+
+		private static void ConvertMasterLocalization()
+		{
+			string MasterPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "Translation Master.xlsx"));
+			string TsvPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "Localization.tsv"));
+			
+			bool UpdateLanguageFile = args_RedoAll || Date(TsvPath) < Date(MasterPath);
+			if (!UpdateLanguageFile) return;
+
+			var t = File.ReadAllBytes(MasterPath);
+			var connection = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=Excel 12.0;", MasterPath);
+
+			var adapter = new OleDbDataAdapter("SELECT * FROM [Localization$]", connection);
+			var ds = new DataSet();
+
+			adapter.Fill(ds);
+
+			var table = ds.Tables["Table"];
+			var data = table.AsEnumerable();
+
+			string text = "";
+			foreach (var d in data)
+			{
+				for (int i = 0; i < d.ItemArray.Length; i++)
+					text += (string)d.ItemArray[i] + '\t';
+				text += '\n';
+			}
+
+			File.WriteAllText(TsvPath, text);
+		}
     }
 }

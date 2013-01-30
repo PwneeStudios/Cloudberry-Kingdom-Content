@@ -105,7 +105,7 @@ const int TEXTURE_HEIGHTS[] = {{
 ";
 
 		const string LoadListTemplate_VideoMemory = @"
-const bool *VIDEO_MEMORY[] = {{
+const bool VIDEO_MEMORY[] = {{
 {0}
 }};";
 

@@ -722,6 +722,8 @@ const bool VIDEO_MEMORY[] = {{
 			string text = "";
 			foreach (var d in data)
 			{
+				if (d.ItemArray.Length > 0 && d.ItemArray[0] is DBNull) continue;
+
 				for (int i = 1; i < d.ItemArray.Length; i++)
 					text += (string)d.ItemArray[i] + '\t';
 				text += '\n';
@@ -730,8 +732,8 @@ const bool VIDEO_MEMORY[] = {{
 			File.WriteAllText(TsvPath, text);
 
 			// Convert for printf
-			text = text.Replace("{0}", "%s");
-			text = text.Replace("{1}", "%s");
+			text = text.Replace("{0}", "%ws");
+			text = text.Replace("{1}", "%ws");
 			File.WriteAllText(TsvCppPath, text);
 		}
     }

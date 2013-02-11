@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -33,7 +34,8 @@ namespace ContentBuilder
 		const string ContentPath_PC_CPlusPlus = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\Content\";
 		const string ContentPath_PC = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Cloudberry Kingdom\Cloudberry Kingdom\ContentPC\";
 
-		const string LoadListPath = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\Game\ResourceList\Resources_Art.h";
+		const string LoadListPath_Xbox = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Cloudberry Kingdom\Cloudberry Kingdom\Game\Tools\Resources_Art.cs";
+		const string LoadListPath_Cpp  = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\Game\ResourceList\Resources_Art.h";
 
 		// File types to copy besides textures
 		static HashSet<string> FileTypes = new HashSet<string>()          { ".txt", ".tsv", ".fnt", ".smo", ".wav" };
@@ -66,7 +68,33 @@ namespace ContentBuilder
 		const string Params_cgnv2elf = @"--no-unref --no-sem  ""{0}"" ""{1}""";
 
 		// LoadList template
-		const string LoadListTemplate_SingleBuild = @"
+		const string LoadListTemplate_Xbox = @"
+namespace CloudberryKingdom
+{{
+	public class ArtList
+	{{
+		public static string[] ArtFiles =
+		{{
+{0}
+		}};
+	}}
+}}
+";
+
+		const string LoadListTemplate_Xbox2 = @"
+namespace CloudberryKingdom
+{{
+	public class ArtList
+	{{
+		public static void PreloadArtFiles()
+		{{
+{0}
+		}}
+	}}
+}}
+";
+
+		const string LoadListTemplate_SingleBuild_Cpp = @"
 const wchar_t *TEXTURE_PATHS[] = {{
 {0}
 }};
@@ -78,7 +106,7 @@ const int TEXTURE_WIDTHS[] = {{
 const int TEXTURE_HEIGHTS[] = {{
 {2}
 }};";
-		const string LoadListTemplate = @"
+		const string LoadListTemplate_Cpp = @"
 #ifndef _RESOURCES_ART_H_
 #define _RESOURCES_ART_H_
 
@@ -451,9 +479,14 @@ const bool VIDEO_MEMORY[] = {{
 
 		static void Main(string[] args)
         {
+			//LocalizationToXml(); return;
+
 			if (args.Length > 0 && args[0] == "1") { args_RedoAll = true; Console.WriteLine("Arguments: Rebuilding all. (Will take a while)"); }
 			if (args.Length > 1 && args[1] == "1") { args_RedoDDS = true; Console.WriteLine("Arguments: Rebuild DDS files. (Will take a while)"); }
 			if (args.Length > 2 && args[2] == "1") { args_RedoList = true; Console.WriteLine("Arguments: Rebuild texture list for C++."); }
+
+			//args_RedoList = true; Console.WriteLine("Arguments: Rebuild texture list for C++.");
+
 
 			// Compiler shaders
 			List<string> ShaderFiles = GetFiles(Path.Combine(ContentPath_Source, "Shaders"), true);
@@ -483,7 +516,7 @@ const bool VIDEO_MEMORY[] = {{
 
 			// Get texture asset list
 			string proj = Path.Combine(ContentPath_Source, @"Proj.xlsx");
-			bool UpdateLoadList = args_RedoAll || args_RedoList || Date(LoadListPath) < Date(proj);
+			bool UpdateLoadList = args_RedoAll || args_RedoList || Date(LoadListPath_Cpp) < Date(proj);
 			string connection = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=Excel 12.0;", proj);
 
 			var adapter = new OleDbDataAdapter("SELECT * FROM [Files$]", connection);
@@ -535,6 +568,31 @@ const bool VIDEO_MEMORY[] = {{
 			// Make texture list
 			if (UpdateLoadList)
 			{
+				string TextureList_Xbox = "";
+				string XboxTemplate = "\"{0}\",\n";
+				foreach (var _file in TextureAssets)
+				{
+					if (_file.Xbox.Include)
+					{
+						if (!_file.FilePath.Contains("Art")) continue;
+
+						var path = _file.FilePath;
+						var name = StripPath(path);
+						var lowerpath = path.ToLower(CultureInfo.InvariantCulture);
+						var lowername = name.ToLower(CultureInfo.InvariantCulture);
+						var bigname = GetFileBigName(path).ToLower(CultureInfo.InvariantCulture);
+						var folder = FirstFolder(path, "Art\\");
+
+						//TextureList_Xbox += string.Format(XboxTemplate, path);
+						TextureList_Xbox += string.Format(
+							"Tools.TextureWad.AddTexture_Fast(null, \"{0}\", 0, 0, \"{1}\", \"{2}\", \"{3}\");\n",
+							EscapeBackslashes(path), EscapeBackslashes(name), EscapeBackslashes(lowername), EscapeBackslashes(folder));
+					}
+				}
+				//TextureList_Xbox = string.Format(LoadListTemplate_Xbox, TextureList_Xbox);
+				TextureList_Xbox = string.Format(LoadListTemplate_Xbox2, TextureList_Xbox);
+				File.WriteAllText(LoadListPath_Xbox, TextureList_Xbox);
+
 				string TextureList_PS3 = "";
 				string TextureList_Width_PS3 = "";
 				string TextureList_Height_PS3 = "";
@@ -549,7 +607,7 @@ const bool VIDEO_MEMORY[] = {{
 						TextureList_VideoMemory += string.Format("{0},\n", file.VideoMemory ? "true" : "false" );
 					}
 				}
-				TextureList_PS3 = string.Format(LoadListTemplate_SingleBuild, TextureList_PS3, TextureList_Width_PS3, TextureList_Height_PS3);
+				TextureList_PS3 = string.Format(LoadListTemplate_SingleBuild_Cpp, TextureList_PS3, TextureList_Width_PS3, TextureList_Height_PS3);
 				TextureList_VideoMemory = string.Format(LoadListTemplate_VideoMemory, TextureList_VideoMemory);
 
 				string TextureList_WiiU = "";
@@ -564,7 +622,7 @@ const bool VIDEO_MEMORY[] = {{
 						TextureList_Height_WiiU += string.Format("{0},\n", file.Height);
 					}
 				}
-				TextureList_WiiU = string.Format(LoadListTemplate_SingleBuild, TextureList_WiiU, TextureList_Width_WiiU, TextureList_Height_WiiU);
+				TextureList_WiiU = string.Format(LoadListTemplate_SingleBuild_Cpp, TextureList_WiiU, TextureList_Width_WiiU, TextureList_Height_WiiU);
 
 				string TextureList_PC = "";
 				string TextureList_Width_PC = "";
@@ -578,10 +636,10 @@ const bool VIDEO_MEMORY[] = {{
 						TextureList_Height_PC += string.Format("{0},\n", file.Height);
 					}
 				}
-				TextureList_PC = string.Format(LoadListTemplate_SingleBuild, TextureList_PC, TextureList_Width_PC, TextureList_Height_PC);
+				TextureList_PC = string.Format(LoadListTemplate_SingleBuild_Cpp, TextureList_PC, TextureList_Width_PC, TextureList_Height_PC);
 
-				string TextureList = string.Format(LoadListTemplate, TextureList_PS3, TextureList_WiiU, TextureList_PC, TextureList_VideoMemory);
-				File.WriteAllText(LoadListPath, TextureList);
+				string TextureList = string.Format(LoadListTemplate_Cpp, TextureList_PS3, TextureList_WiiU, TextureList_PC, TextureList_VideoMemory);
+				File.WriteAllText(LoadListPath_Cpp, TextureList);
 			}
 
 			// Get non-texture assets
@@ -732,9 +790,94 @@ const bool VIDEO_MEMORY[] = {{
 			File.WriteAllText(TsvPath, text);
 
 			// Convert for printf
-			text = text.Replace("{0}", "%ws");
-			text = text.Replace("{1}", "%ws");
+			text = text.Replace("{0}", "%ls");
+			text = text.Replace("{1}", "%ls");
 			File.WriteAllText(TsvCppPath, text);
+		}
+
+		private static void LocalizationToXml()
+		{
+string template = @"
+        <Translation locale=""en-US"">{0}</Translation>
+		<Translation locale=""ja-JP"">{1}</Translation>
+		<Translation locale=""de-DE"">{2}</Translation>
+		<Translation locale=""pt-PT"">{3}</Translation>
+		<Translation locale=""it-IT"">{4}</Translation>
+        <Translation locale=""fr-FR"">{5}</Translation>
+		<Translation locale=""es-ES"">{6}</Translation>
+        <Translation locale=""ru-RU"">{7}</Translation>
+        <Translation locale=""ko-KR"">{8}</Translation>
+        <Translation locale=""zh-CN"">{9}</Translation>
+";
+			string MasterPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "Translation Master.xlsx"));
+			string XmlPath = "C:/Users/Ezra/Desktop/Xml.txt";
+
+			var t = File.ReadAllBytes(MasterPath);
+			var connection = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}; Extended Properties=Excel 12.0;", MasterPath);
+
+			var adapter = new OleDbDataAdapter("SELECT * FROM [Localization$]", connection);
+			var ds = new DataSet();
+
+			adapter.Fill(ds);
+
+			var table = ds.Tables["Table"];
+			var data = table.AsEnumerable();
+
+			string text = "";
+			foreach (var d in data)
+			{
+				if (d.ItemArray.Length > 0 && d.ItemArray[0] is DBNull) continue;
+
+				text += string.Format(template, d.ItemArray[1], d.ItemArray[2], d.ItemArray[3], d.ItemArray[4], d.ItemArray[5], d.ItemArray[6], d.ItemArray[7], d.ItemArray[8], d.ItemArray[9], d.ItemArray[10]);
+				text += '\n';
+			}
+
+			File.WriteAllText(XmlPath, text);
+		}
+
+		/// <summary>
+		/// Return just the file name of a path.
+		/// </summary>
+		public static string StripPath(string file)
+		{
+			int LastSlash = file.LastIndexOf("\\");
+			if (LastSlash < 0)
+				return file;
+			else
+				return file.Substring(LastSlash + 1);
+		}
+
+		public static string GetFileBigName(String FilePath)
+		{
+			int i = FilePath.LastIndexOf("\\");
+			if (i < 0) return FilePath;
+
+			string Path = FilePath.Substring(0, i);
+			i = Path.LastIndexOf("\\");
+
+			if (i < 0) return FilePath;
+			else return FilePath.Substring(i + 1);
+		}
+
+		/// <summary>
+		/// Return just the first folder of the path.
+		/// </summary>
+		public static string FirstFolder(string path, string ignore)
+		{
+			int i = path.IndexOf(ignore);
+			if (i >= 0)
+				path = path.Substring(i + ignore.Length);
+
+			int FirstSlash = path.IndexOf("\\");
+			if (FirstSlash < 0)
+				return path;
+			else
+				return path.Substring(0, FirstSlash);
+		}
+
+		public static string EscapeBackslashes(string path)
+		{
+			return path.Replace("\\", "\\\\");
 		}
     }
 }

@@ -809,6 +809,33 @@ string template = @"
         <Translation locale=""ko-KR"">{8}</Translation>
         <Translation locale=""zh-CN"">{9}</Translation>
 ";
+
+string escalation_template = @"
+        <Translation locale=""en-US"">Escalation, {0}</Translation>
+		<Translation locale=""ja-JP"">エスカレーション, {1}</Translation>
+		<Translation locale=""de-DE"">Eskalation, {2}</Translation>
+		<Translation locale=""pt-PT"">Escalada, {3}</Translation>
+		<Translation locale=""it-IT"">Escalation, {4}</Translation>
+        <Translation locale=""fr-FR"">Escalade, {5}</Translation>
+		<Translation locale=""es-ES"">Escalacion, {6}</Translation>
+        <Translation locale=""ru-RU"">Обострение, {7}</Translation>
+        <Translation locale=""ko-KR"">단계적 확대, {8}</Translation>
+        <Translation locale=""zh-CN"">升级, {9}</Translation>
+";
+
+string timecrisis_template = @"
+        <Translation locale=""en-US"">Time Crisis, {0}</Translation>
+		<Translation locale=""ja-JP"">タイムトライアル, {1}</Translation>
+		<Translation locale=""de-DE"">Wettlauf Gegen die Zeit, {2}</Translation>
+		<Translation locale=""pt-PT"">Velocidade Máxima, {3}</Translation>
+		<Translation locale=""it-IT"">Crisi del Tempo, {4}</Translation>
+        <Translation locale=""fr-FR"">Contre-la-Montre, {5}</Translation>
+		<Translation locale=""es-ES"">Tiempo de Crisis, {6}</Translation>
+        <Translation locale=""ru-RU"">Кризис времени, {7}</Translation>
+        <Translation locale=""ko-KR"">시간 위기, {8}</Translation>
+        <Translation locale=""zh-CN"">时间危机, {9}</Translation>
+";
+
 			string MasterPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "Translation Master.xlsx"));
 			string XmlPath = "C:/Users/Ezra/Desktop/Xml.txt";
 

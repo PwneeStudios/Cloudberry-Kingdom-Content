@@ -1,0 +1,39 @@
+/*---------------------------------------------------------------------------*
+
+  Copyright 2010-2011 Nintendo.  All rights reserved.
+
+  These coded instructions, statements, and computer programs contain
+  proprietary information of Nintendo of America Inc. and/or Nintendo
+  Company Ltd., and are protected by Federal copyright law.  They may
+  not be disclosed to third parties or copied or duplicated in any form,
+  in whole or in part, without the prior written consent of Nintendo.
+
+ *---------------------------------------------------------------------------*/
+#extension GL_EXT_Cafe : enable
+
+varying vec2 v_texcoord;
+
+layout(binding = 0) uniform sampler2D s_Ltexture;
+layout(binding = 1) uniform sampler2D s_UVtexture;
+
+layout(binding = 0) uniform float u_FetchType;
+
+void main()
+{
+    vec3 LUV;
+    vec4 L;
+
+    if( u_FetchType == 0 ){
+    LUV.x = texture( s_Ltexture, v_texcoord ).r;
+    LUV.yz = texture( s_UVtexture, v_texcoord ).rg - vec2(0.5, 0.5);
+    }else{
+        vec4 L4 = textureGather(s_Ltexture, v_texcoord);
+        LUV.x = (L4.x + L4.y + L4.z + L4.w) / 4.0;
+        LUV.yz = vec2(0.0, 0.0);
+    }
+
+    gl_FragColor.r = LUV.x + 1.402 * LUV.z;
+    gl_FragColor.g = LUV.x - 0.714 * LUV.z - 0.344 * LUV.y;
+    gl_FragColor.b = LUV.x + 1.772 * LUV.y;
+}
+

@@ -1,0 +1,11 @@
+#extension GL_EXT_Cafe : enable
+
+varying vec2 v_texcoord;
+
+layout(binding = 0) uniform sampler2D s_texture;
+
+void main()
+{
+    gl_FragColor = texture( s_texture, v_texcoord );
+}
+

@@ -28,13 +28,14 @@ namespace ContentBuilder
 		const string ContentPath_Source = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Content\";
 		const string ContentPath_Source_Temp = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Content\__premult\";
 
-		const string ContentPath_WiiU = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\ContentWiiU\";
+		const string ContentPath_WiiU = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\ContentWiiU\0010\";
 		const string ContentPath_PS3 = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\ContentPS3\";
 		const string ContentPath_Xbox = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Cloudberry Kingdom\Cloudberry Kingdom\Content\";
 		const string ContentPath_PC_CPlusPlus = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\Content\";
 		const string ContentPath_PC = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Cloudberry Kingdom\Cloudberry Kingdom\ContentPC\";
 
 		const string LoadListPath_Xbox = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Cloudberry Kingdom\Cloudberry Kingdom\Game\Tools\Resources_Art.cs";
+		const string LoadListPath_CSharpPC = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\Cloudberry Kingdom\Cloudberry Kingdom\Game\Tools\Resources_Art_PC.cs";
 		const string LoadListPath_Cpp  = @"C:\Users\Ezra\Desktop\Dir\Pwnee\CK\Source\CloudberryKingdomPort\Cloudberry-Kingdom-Port\Game\ResourceList\Resources_Art.h";
 
 		// File types to copy besides textures
@@ -62,26 +63,15 @@ namespace ContentBuilder
 		static string Path_sce_cgc = @"sce-cgc";
 		static string Params_sce_cgc_vertex = @"-I """ + ShaderSourceDir + @""" -p sce_vp_rsx -o ""{1}"" -e {2} ""{0}""";
 		static string Params_sce_cgc_pixel =  @"-I """ + ShaderSourceDir + @""" -p sce_fp_rsx -o ""{1}"" -e {2} ""{0}""";
+		static string Params_encrypt_shader = @"{0} {0}.SDAT";
 		const string Path_sce_cgcstrip = "sce-cgcstrip";
 		const string Params_sce_cgcstrip = @"-param -o ""{1}"" ""{0}""";
 		const string Path_cgnv2elf = "cgnv2elf";
+		const string Path_encrypt_shader = @"make_sdata";
 		const string Params_cgnv2elf = @"--no-unref --no-sem  ""{0}"" ""{1}""";
 
 		// LoadList template
-		const string LoadListTemplate_Xbox = @"
-namespace CloudberryKingdom
-{{
-	public class ArtList
-	{{
-		public static string[] ArtFiles =
-		{{
-{0}
-		}};
-	}}
-}}
-";
-
-		const string LoadListTemplate_Xbox2 = @"
+		const string LoadListTemplate_CSharp = @"
 namespace CloudberryKingdom
 {{
 	public class ArtList
@@ -271,6 +261,7 @@ const bool VIDEO_MEMORY[] = {{
 				RunCommand(Path_sce_cgc, string.Format(Params_sce_cgc_vertex, ShaderPath, dest_vertex_temp1, vertex_entry));
 				RunCommand(Path_sce_cgcstrip, string.Format(Params_sce_cgcstrip, dest_vertex_temp1, dest_vertex_temp2));
  				RunCommand(Path_cgnv2elf, string.Format(Params_cgnv2elf, dest_vertex_temp2, dest_vertex));
+				RunCommand(Path_encrypt_shader, string.Format(Params_encrypt_shader, dest_vertex));
 				File.Delete(dest_vertex_temp1);
 				File.Delete(dest_vertex_temp2);
 			}
@@ -280,6 +271,7 @@ const bool VIDEO_MEMORY[] = {{
 				RunCommand(Path_sce_cgc, string.Format(Params_sce_cgc_pixel, ShaderPath, dest_pixel_temp1, pixel_entry));
 				RunCommand(Path_sce_cgcstrip, string.Format(Params_sce_cgcstrip, dest_pixel_temp1, dest_pixel_temp2));
 				RunCommand(Path_cgnv2elf, string.Format(Params_cgnv2elf, dest_pixel_temp2, dest_pixel));
+				RunCommand(Path_encrypt_shader, string.Format(Params_encrypt_shader, dest_pixel));
 				File.Delete(dest_pixel_temp1);
 				File.Delete(dest_pixel_temp2);
 			}
@@ -315,6 +307,8 @@ const bool VIDEO_MEMORY[] = {{
 			public string FilePath;
 
 			public bool VideoMemory;
+
+			public double Priority;
 
 			public int GetWidth()
 			{
@@ -509,6 +503,15 @@ const bool VIDEO_MEMORY[] = {{
 				// For PS3
 				if (extension == ".fx")
 					CompilePS3Shader(file);
+
+				// Delete intermediate files
+				var shader_intermediates = GetFiles(Path.Combine(ContentPath_PS3, "Shaders"), true);
+				foreach (var _file in shader_intermediates)
+				{
+					string ext = Path.GetExtension(_file);
+					if (ext == ".vpo" || ext == ".fpo")
+						File.Delete(_file);
+				}
 			}
 
 			// Convert language excel file to unicode tsv
@@ -531,13 +534,15 @@ const bool VIDEO_MEMORY[] = {{
 			{
 				AssetInfo asset = new AssetInfo();
 
-				asset.FilePath = (string)d.ItemArray[15];
+				asset.FilePath = (string)d.ItemArray[16];
 				asset.FilePath = asset.FilePath.Replace('/', '\\');
+
+				asset.Priority = (double)d.ItemArray[15];
 
 				// Get defaults
 				AssetInfo_Single Default = new AssetInfo_Single();
 				ParseAsset(ref Default, ref Default, d.ItemArray[12], d.ItemArray[13], d.ItemArray[14]);
-				asset.VideoMemory = ((string)d.ItemArray[16]) == "Yes";
+				asset.VideoMemory = ((string)d.ItemArray[17]) == "Yes";
 
 				// Xbox
 				ParseAsset(ref asset.Xbox, ref Default, d.ItemArray[0], d.ItemArray[1], d.ItemArray[2]);
@@ -568,30 +573,41 @@ const bool VIDEO_MEMORY[] = {{
 			// Make texture list
 			if (UpdateLoadList)
 			{
-				string TextureList_Xbox = "";
-				string XboxTemplate = "\"{0}\",\n";
+				TextureAssets.Sort((A, B) => A.Priority.CompareTo(B.Priority));
+
+				string TextureList_Xbox = "", TextureList_CSharpPC = "";
 				foreach (var _file in TextureAssets)
 				{
+					if (!_file.FilePath.Contains("Art")) continue;
+
+					var path = _file.FilePath;
+					var name = StripPath(path);
+					var lowerpath = path.ToLower(CultureInfo.InvariantCulture);
+					var lowername = name.ToLower(CultureInfo.InvariantCulture);
+					var bigname = GetFileBigName(path).ToLower(CultureInfo.InvariantCulture);
+					var folder = FirstFolder(path, "Art\\");
+
+					var line = string.Format(
+								"Tools.TextureWad.AddTexture_Fast(null, \"{0}\", {4}, {5}, \"{1}\", \"{2}\", \"{3}\");\n",
+								EscapeBackslashes(path), EscapeBackslashes(name), EscapeBackslashes(lowername), EscapeBackslashes(folder),
+								_file.Width, _file.Height);
+
 					if (_file.Xbox.Include)
 					{
-						if (!_file.FilePath.Contains("Art")) continue;
+						TextureList_Xbox += line;
+					}
 
-						var path = _file.FilePath;
-						var name = StripPath(path);
-						var lowerpath = path.ToLower(CultureInfo.InvariantCulture);
-						var lowername = name.ToLower(CultureInfo.InvariantCulture);
-						var bigname = GetFileBigName(path).ToLower(CultureInfo.InvariantCulture);
-						var folder = FirstFolder(path, "Art\\");
-
-						//TextureList_Xbox += string.Format(XboxTemplate, path);
-						TextureList_Xbox += string.Format(
-							"Tools.TextureWad.AddTexture_Fast(null, \"{0}\", 0, 0, \"{1}\", \"{2}\", \"{3}\");\n",
-							EscapeBackslashes(path), EscapeBackslashes(name), EscapeBackslashes(lowername), EscapeBackslashes(folder));
+					if (_file.PC.Include)
+					{
+						TextureList_CSharpPC += line;
 					}
 				}
-				//TextureList_Xbox = string.Format(LoadListTemplate_Xbox, TextureList_Xbox);
-				TextureList_Xbox = string.Format(LoadListTemplate_Xbox2, TextureList_Xbox);
+				TextureList_Xbox = string.Format(LoadListTemplate_CSharp, TextureList_Xbox);
 				File.WriteAllText(LoadListPath_Xbox, TextureList_Xbox);
+
+				TextureList_CSharpPC = string.Format(LoadListTemplate_CSharp, TextureList_CSharpPC);
+				File.WriteAllText(LoadListPath_CSharpPC, TextureList_CSharpPC);
+
 
 				string TextureList_PS3 = "";
 				string TextureList_Width_PS3 = "";
@@ -601,6 +617,9 @@ const bool VIDEO_MEMORY[] = {{
 				{
 					if (file.PS3.Include)
 					{
+						if (!file.FilePath.Contains("Art")) continue;
+						//if (!file.FilePath.Contains("Art") && !file.FilePath.Contains("Font")) continue;
+
 						TextureList_PS3 += string.Format("L\"{0}\",\n", file.FilePath.Replace("\\", "/"));
 						TextureList_Width_PS3 += string.Format("{0},\n", file.Width);
 						TextureList_Height_PS3 += string.Format("{0},\n", file.Height);
@@ -617,6 +636,8 @@ const bool VIDEO_MEMORY[] = {{
 				{
 					if (file.WiiU.Include)
 					{
+						if (!file.FilePath.Contains("Art") && !file.FilePath.Contains("Font")) continue;
+
 						TextureList_WiiU += string.Format("L\"{0}\",\n", file.FilePath.Replace("\\", "/"));
 						TextureList_Width_WiiU += string.Format("{0},\n", file.Width);
 						TextureList_Height_WiiU += string.Format("{0},\n", file.Height);
@@ -631,6 +652,8 @@ const bool VIDEO_MEMORY[] = {{
 				{
 					if (file.PC.Include)
 					{
+						if (!file.FilePath.Contains("Art") && !file.FilePath.Contains("Font")) continue;
+
 						TextureList_PC += string.Format("L\"{0}\",\n", file.FilePath.Replace("\\", "/"));
 						TextureList_Width_PC += string.Format("{0},\n", file.Width);
 						TextureList_Height_PC += string.Format("{0},\n", file.Height);
@@ -762,7 +785,7 @@ const bool VIDEO_MEMORY[] = {{
 			string MasterPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "Translation Master.xlsx"));
 			string TsvPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "Localization.tsv"));
 			string TsvCppPath = Path.Combine(ContentPath_Source, Path.Combine("Localization", "LocalizationCpp.tsv"));
-			
+
 			bool UpdateLanguageFile = args_RedoAll || Date(TsvPath) < Date(MasterPath);
 			if (!UpdateLanguageFile) return;
 
@@ -778,13 +801,23 @@ const bool VIDEO_MEMORY[] = {{
 			var data = table.AsEnumerable();
 
 			string text = "";
+			int count = 1;
 			foreach (var d in data)
 			{
 				if (d.ItemArray.Length > 0 && d.ItemArray[0] is DBNull) continue;
 
-				for (int i = 1; i < d.ItemArray.Length; i++)
-					text += (string)d.ItemArray[i] + '\t';
+				 for (int i = 1; i < d.ItemArray.Length; i++)
+				 {
+					 if (((string)d.ItemArray[i]).Contains('\n'))
+					 {
+						 Console.WriteLine("Warning: Line break found in Localization file, Key {2}, on Line {0} : Row {1}", count + 1, i + 1, (string)d.ItemArray[0]);
+					 }
+
+					 text += (string)d.ItemArray[i] + '\t';
+				 }
 				text += '\n';
+				
+				count++;
 			}
 
 			File.WriteAllText(TsvPath, text);

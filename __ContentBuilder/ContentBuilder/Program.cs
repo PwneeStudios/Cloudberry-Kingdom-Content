@@ -576,6 +576,7 @@ const bool VIDEO_MEMORY[] = {{
 				TextureAssets.Sort((A, B) => A.Priority.CompareTo(B.Priority));
 
 				string TextureList_Xbox = "", TextureList_CSharpPC = "";
+				int count_xbox = 0, count_pc = 0;
 				foreach (var _file in TextureAssets)
 				{
 					if (!_file.FilePath.Contains("Art")) continue;
@@ -587,18 +588,25 @@ const bool VIDEO_MEMORY[] = {{
 					var bigname = GetFileBigName(path).ToLower(CultureInfo.InvariantCulture);
 					var folder = FirstFolder(path, "Art\\");
 
-					var line = string.Format(
-								"Tools.TextureWad.AddTexture_Fast(null, \"{0}\", {4}, {5}, \"{1}\", \"{2}\", \"{3}\");\n",
-								EscapeBackslashes(path), EscapeBackslashes(name), EscapeBackslashes(lowername), EscapeBackslashes(folder),
-								_file.Width, _file.Height);
-
 					if (_file.Xbox.Include)
 					{
+						count_xbox++;
+						var line = string.Format(
+									"Tools.TextureWad.AddTexture_Fast(null, \"{0}\", {4}, {5}, \"{1}\", \"{2}\", \"{3}\"); // {6}\n",
+									EscapeBackslashes(path), EscapeBackslashes(name), EscapeBackslashes(lowername), EscapeBackslashes(folder),
+									_file.Width, _file.Height, count_xbox);
+
 						TextureList_Xbox += line;
 					}
 
 					if (_file.PC.Include)
 					{
+						count_pc++;
+						var line = string.Format(
+									"Tools.TextureWad.AddTexture_Fast(null, \"{0}\", {4}, {5}, \"{1}\", \"{2}\", \"{3}\"); // {6}\n",
+									EscapeBackslashes(path), EscapeBackslashes(name), EscapeBackslashes(lowername), EscapeBackslashes(folder),
+									_file.Width, _file.Height, count_pc);
+
 						TextureList_CSharpPC += line;
 					}
 				}
@@ -806,15 +814,15 @@ const bool VIDEO_MEMORY[] = {{
 			{
 				if (d.ItemArray.Length > 0 && d.ItemArray[0] is DBNull) continue;
 
-				 for (int i = 1; i < d.ItemArray.Length; i++)
-				 {
-					 if (((string)d.ItemArray[i]).Contains('\n'))
-					 {
-						 Console.WriteLine("Warning: Line break found in Localization file, Key {2}, on Line {0} : Row {1}", count + 1, i + 1, (string)d.ItemArray[0]);
-					 }
+				for (int i = 1; i < d.ItemArray.Length; i++)
+				{
+					if (((string)d.ItemArray[i]).Contains('\n'))
+					{
+						Console.WriteLine("Warning: Line break found in Localization file, Key {2}, on Line {0} : Row {1}", count + 1, i + 1, (string)d.ItemArray[0]);
+					}
 
-					 text += (string)d.ItemArray[i] + '\t';
-				 }
+					text += (string)d.ItemArray[i] + '\t';
+				}
 				text += '\n';
 				
 				count++;
